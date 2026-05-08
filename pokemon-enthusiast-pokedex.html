@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PokéVerse Pokédex</title>
+  <meta name="description" content="A fun, cartoonish all-Pokémon Pokédex with images, stats, generations, evolutions, forms, and enthusiast-grade filters." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem;
+      --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
+      --space-20: 5rem; --space-24: 6rem;
+      --radius-sm: 0.375rem; --radius-md: 0.75rem; --radius-lg: 1.25rem; --radius-xl: 1.75rem; --radius-full: 9999px;
+      --font-display: 'Fredoka', 'Trebuchet MS', sans-serif;
+      --font-body: 'Nunito', 'Segoe UI', sans-serif;
+      --color-bg: #fff9ea;
+      --color-surface: #fffef7;
+      --color-surface-2: #fff3d8;
+      --color-surface-offset: #ffe7b8;
+      --color-surface-dynamic: #ffe08d;
+      --color-border: #d9b96e;
+      --color-divider: #e7d6aa;
+      --color-text: #312510;
+      --color-text-muted: #725d30;
+      --color-text-faint: #a68d5c;
+      --color-primary: #ef5350;
+      --color-primary-hover: #d84343;
+      --color-blue: #42a5f5;
+      --color-yellow: #ffd54f;
+      --color-success: #66bb6a;
+      --color-purple: #ab47bc;
+      --shadow-sm: 0 2px 0 rgba(89, 58, 13, 0.12);
+      --shadow-md: 0 10px 0 rgba(89, 58, 13, 0.10), 0 14px 30px rgba(89, 58, 13, 0.12);
+      --shadow-lg: 0 16px 0 rgba(89, 58, 13, 0.10), 0 24px 50px rgba(89, 58, 13, 0.18);
+      --content-wide: 1280px;
+      --transition: 180ms cubic-bezier(.16,1,.3,1);
+    }
+    [data-theme="dark"] {
+      --color-bg: #1d1730;
+      --color-surface: #261e3d;
+      --color-surface-2: #322752;
+      --color-surface-offset: #3a2d62;
+      --color-surface-dynamic: #49368a;
+      --color-border: #6554b3;
+      --color-divider: #4b3d73;
+      --color-text: #f7f3ff;
+      --color-text-muted: #d8ceff;
+      --color-text-faint: #afa4d9;
+      --color-primary: #ff6b6b;
+      --color-primary-hover: #ff8787;
+      --color-blue: #64b5f6;
+      --color-yellow: #ffd54f;
+      --color-success: #81c784;
+      --color-purple: #ce93d8;
+      --shadow-sm: 0 2px 0 rgba(0,0,0,.22);
+      --shadow-md: 0 10px 0 rgba(0,0,0,.18), 0 14px 30px rgba(0,0,0,.28);
+      --shadow-lg: 0 16px 0 rgba(0,0,0,.16), 0 24px 50px rgba(0,0,0,.4);
+    }
+    *,:before,:after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.55;background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.45), transparent 16%),
+      radial-gradient(circle at 82% 12%, rgba(255,255,255,.35), transparent 14%),
+      linear-gradient(180deg, var(--color-bg), color-mix(in srgb, var(--color-bg) 74%, #ffe39a));
+      color:var(--color-text)}
+    img,svg{display:block;max-width:100%;height:auto}
+    button,input,select{font:inherit}
+    button{cursor:pointer;border:none}
+    a{color:inherit}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .skip-link{position:absolute;left:var(--space-4);top:-100px;background:var(--color-primary);color:#fff;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);z-index:999}
+    .skip-link:focus{top:var(--space-4)}
+    .app-shell{max-width:var(--content-wide);margin-inline:auto;padding:var(--space-4)}
+    .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) 0;background:linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 95%, transparent), color-mix(in srgb, var(--color-bg) 75%, transparent));backdrop-filter:blur(12px)}
+    .brand{display:flex;align-items:center;gap:var(--space-3)}
+    .logo-wrap{width:58px;height:58px;border-radius:50%;background:conic-gradient(from 180deg, #fff 0 50%, #ef5350 50% 100%);display:grid;place-items:center;box-shadow:var(--shadow-md);border:4px solid var(--color-text)}
+    .logo-wrap svg{width:36px;height:36px}
+    .brand h1{margin:0;font-family:var(--font-display);font-size:var(--text-xl);line-height:1;color:var(--color-primary);text-shadow:2px 2px 0 rgba(255,255,255,.6)}
+    .brand p{margin:0;color:var(--color-text-muted);font-weight:800;font-size:var(--text-sm)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:var(--space-2);align-items:center}
+    .icon-btn,.chip-btn{min-height:44px;border-radius:var(--radius-full);padding:0 var(--space-4);background:var(--color-surface);border:2px solid var(--color-border);box-shadow:var(--shadow-sm);color:var(--color-text);font-weight:800;transition:transform var(--transition), background var(--transition)}
+    .icon-btn:hover,.chip-btn:hover{transform:translateY(-2px)}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:var(--space-8);align-items:center;padding:var(--space-8);background:linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 12%, var(--color-surface)) 0%, color-mix(in srgb, var(--color-blue) 10%, var(--color-surface)) 100%);border:3px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+    .hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.3)}
+    .hero:before{width:220px;height:220px;right:-60px;top:-80px}
+    .hero:after{width:170px;height:170px;left:-60px;bottom:-70px}
+    .hero h2{margin:0 0 var(--space-4);font-family:var(--font-display);font-size:clamp(2.5rem, 5vw, 5rem);line-height:.92;max-width:10ch}
+    .hero p{margin:0 0 var(--space-6);max-width:58ch;color:var(--color-text-muted);font-weight:700}
+    .hero-actions,.mini-stats{display:flex;flex-wrap:wrap;gap:var(--space-3)}
+    .cta-primary,.cta-secondary{min-height:48px;padding:0 var(--space-5);border-radius:var(--radius-full);font-weight:900;border:3px solid var(--color-text);box-shadow:var(--shadow-md)}
+    .cta-primary{background:var(--color-primary);color:#fff}
+    .cta-secondary{background:var(--color-yellow);color:var(--color-text)}
+    .mini-stat{padding:var(--space-3) var(--space-4);background:rgba(255,255,255,.62);border:2px dashed var(--color-border);border-radius:var(--radius-lg);font-weight:900}
+    .hero-visual{position:relative;min-height:320px;display:grid;place-items:center}
+    .stadium{position:absolute;inset:0;background:radial-gradient(circle at center, color-mix(in srgb, var(--color-yellow) 45%, white) 0 18%, transparent 19%),linear-gradient(180deg, transparent 0 58%, color-mix(in srgb, var(--color-success) 50%, white) 58%);border-radius:var(--radius-xl);opacity:.65}
+    .floating-card{position:relative;width:min(100%,420px);aspect-ratio:1/.82;padding:var(--space-6);background:var(--color-surface);border:4px solid var(--color-text);border-radius:2rem;box-shadow:var(--shadow-lg);transform:rotate(-3deg)}
+    .floating-card .mascot{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(0,0,0,.18))}
+    .panel{margin-top:var(--space-8);padding:var(--space-6);background:var(--color-surface);border:3px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md)}
+    .panel h3{margin:0 0 var(--space-4);font-family:var(--font-display);font-size:var(--text-xl)}
+    .filters{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:var(--space-3)}
+    .field{display:flex;flex-direction:column;gap:var(--space-2)}
+    .field label{font-weight:900;color:var(--color-text-muted);font-size:var(--text-sm)}
+    .field input,.field select{min-height:48px;padding:0 var(--space-4);border-radius:var(--radius-lg);border:2px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text);font-weight:800;box-shadow:inset 0 -3px 0 rgba(0,0,0,.05)}
+    .field input:focus,.field select:focus{outline:3px solid color-mix(in srgb, var(--color-blue) 55%, white);outline-offset:2px}
+    .results-bar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap;margin:var(--space-6) 0 var(--space-4)}
+    .results-bar p{margin:0;font-weight:900;color:var(--color-text-muted)}
+    .type-legend{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+    .type-pill{padding:.45rem .75rem;border-radius:var(--radius-full);border:2px solid rgba(0,0,0,.2);font-size:var(--text-xs);font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#fff;box-shadow:var(--shadow-sm)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:var(--space-5)}
+    .card{position:relative;display:grid;grid-template-columns:112px 1fr;gap:var(--space-4);padding:var(--space-5);background:var(--color-surface);border:3px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);overflow:hidden;transition:transform var(--transition), box-shadow var(--transition)}
+    .card:hover{transform:translateY(-5px) rotate(-.5deg);box-shadow:var(--shadow-lg)}
+    .card:before{content:"";position:absolute;inset:auto -30px -40px auto;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.3)}
+    .art-wrap{align-self:start;background:radial-gradient(circle at 35% 25%, rgba(255,255,255,.85), transparent 38%), linear-gradient(135deg, var(--color-surface-2), var(--color-surface-offset));border:3px solid rgba(0,0,0,.18);border-radius:1.5rem;padding:var(--space-3);display:grid;place-items:center;min-height:112px}
+    .art-wrap img{width:96px;height:96px;object-fit:contain;image-rendering:auto}
+    .dex-num{font-size:var(--text-sm);font-weight:900;color:var(--color-text-faint);letter-spacing:.06em}
+    .name-line{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)}
+    .name-line h4{margin:0;font-family:var(--font-display);font-size:var(--text-lg)}
+    .tag{padding:.3rem .65rem;border-radius:var(--radius-full);background:color-mix(in srgb, var(--color-yellow) 55%, white);border:2px solid rgba(0,0,0,.16);font-size:var(--text-xs);font-weight:900}
+    .meta,.abilities,.games{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-2)}
+    .meta span,.abilities span,.games span{padding:.35rem .6rem;border-radius:var(--radius-full);background:var(--color-surface-2);border:1px dashed var(--color-border);font-size:var(--text-xs);font-weight:800}
+    .entry{margin-top:var(--space-3);color:var(--color-text-muted);font-weight:700;font-size:var(--text-sm)}
+    .stat-block{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2);margin-top:var(--space-3)}
+    .stat{display:grid;gap:.2rem;padding:.5rem .65rem;background:color-mix(in srgb, var(--color-surface) 65%, var(--color-surface-offset));border-radius:var(--radius-md);border:1px solid color-mix(in srgb, var(--color-border) 75%, transparent)}
+    .stat strong{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint)}
+    .stat span{font-weight:900}
+    .evolution{margin-top:var(--space-3);font-size:var(--text-sm);font-weight:800;color:var(--color-text-muted)}
+    .pagination{display:flex;justify-content:center;gap:var(--space-3);margin:var(--space-8) 0 var(--space-16)}
+    .empty-state,.loader{padding:var(--space-16) var(--space-6);text-align:center;background:var(--color-surface);border:3px dashed var(--color-border);border-radius:var(--radius-xl);font-weight:900;color:var(--color-text-muted)}
+    .loader .ball{width:60px;height:60px;margin:0 auto var(--space-4);border-radius:50%;background:linear-gradient(180deg, var(--color-primary) 0 50%, white 50% 100%);border:4px solid var(--color-text);animation:bounce 900ms infinite alternate ease-in-out}
+    .detail-drawer{position:fixed;inset:0;display:none;background:rgba(16,12,30,.56);padding:var(--space-4);z-index:70}
+    .detail-drawer[open]{display:grid;place-items:center}
+    .detail-card{width:min(980px,100%);max-height:92vh;overflow:auto;background:var(--color-surface);border:4px solid var(--color-text);border-radius:2rem;box-shadow:var(--shadow-lg);padding:var(--space-6)}
+    .detail-head{display:grid;grid-template-columns:200px 1fr auto;gap:var(--space-5);align-items:start}
+    .detail-head img{width:180px;height:180px;object-fit:contain;background:linear-gradient(135deg, var(--color-surface-2), var(--color-surface-offset));border-radius:1.5rem;border:3px solid var(--color-border);padding:var(--space-3)}
+    .detail-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5);margin-top:var(--space-5)}
+    .detail-panel{padding:var(--space-4);background:var(--color-surface-2);border:2px solid var(--color-border);border-radius:var(--radius-lg)}
+    .detail-panel h5{margin:0 0 var(--space-3);font-family:var(--font-display);font-size:var(--text-lg)}
+    .detail-panel p{margin:.35rem 0;color:var(--color-text-muted);font-weight:800}
+    .close-btn{min-width:44px;min-height:44px;border-radius:50%;background:var(--color-primary);color:#fff;border:3px solid var(--color-text);box-shadow:var(--shadow-sm);font-weight:900}
+    .footer-note{padding:0 0 var(--space-16);text-align:center;color:var(--color-text-muted);font-weight:800}
+    @keyframes bounce { from{transform:translateY(0) rotate(-8deg)} to{transform:translateY(-10px) rotate(8deg)} }
+    @media (max-width: 980px){
+      .hero,.filters,.detail-head,.detail-sections{grid-template-columns:1fr}
+      .toolbar{justify-content:flex-end}
+    }
+    @media (max-width: 720px){
+      .app-shell{padding:var(--space-3)}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .card{grid-template-columns:1fr}
+      .art-wrap{max-width:132px}
+      .hero{padding:var(--space-6)}
+      .hero h2{max-width:unset}
+      .floating-card{max-width:280px;margin-inline:auto}
+    }
+    @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;scroll-behavior:auto !important}}
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to Pokédex</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo-wrap" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" aria-label="Pokédex logo">
+            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6"></circle>
+            <path d="M4 32h56" stroke="currentColor" stroke-width="6"></path>
+            <circle cx="32" cy="32" r="9" fill="white" stroke="currentColor" stroke-width="5"></circle>
+          </svg>
+        </div>
+        <div>
+          <h1>PokéVerse Pokédex by pradhanska</h1>
+          <p>Every Pokémon. Every era. Maximum trainer joy.</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="chip-btn" id="jumpRandom">Random Pokémon</button>
+        <button class="icon-btn" id="themeToggle" data-theme-toggle aria-label="Switch theme">🌙</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <h2 id="hero-title">Catch the entire monster museum.</h2>
+          <p>This Pokédex packs official artwork, species lore, types, abilities, stats, height, weight, habitats, evolution lines, generation origin, and game appearances into one playful collector's page.</p>
+          <div class="hero-actions">
+            <button class="cta-primary" id="scrollDex">Open National Dex</button>
+            <button class="cta-secondary" id="scrollFilters">Tune Your Filters</button>
+          </div>
+          <div class="mini-stats" style="margin-top:1rem">
+            <div class="mini-stat"><span id="totalCount">?</span> Pokémon loaded</div>
+            <div class="mini-stat">Official artwork gallery</div>
+            <div class="mini-stat">Generation-by-generation explorer</div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="stadium"></div>
+          <div class="floating-card">
+            <img class="mascot" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu official artwork" width="475" height="475" loading="eager" decoding="async">
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="filtersPanel">
+        <h3>Trainer Control Deck</h3>
+        <div class="filters">
+          <div class="field">
+            <label for="searchInput">Search by name, number, ability, or habitat</label>
+            <input id="searchInput" type="search" placeholder="Try Pikachu, Overgrow, or Forest" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="typeFilter">Type</label>
+            <select id="typeFilter"><option value="">All Types</option></select>
+          </div>
+          <div class="field">
+            <label for="generationFilter">Generation</label>
+            <select id="generationFilter"><option value="">All Gens</option></select>
+          </div>
+          <div class="field">
+            <label for="sortFilter">Sort</label>
+            <select id="sortFilter">
+              <option value="id-asc">National Dex ↑</option>
+              <option value="id-desc">National Dex ↓</option>
+              <option value="name-asc">Name A-Z</option>
+              <option value="hp-desc">Highest HP</option>
+              <option value="atk-desc">Highest Attack</option>
+              <option value="spd-desc">Highest Speed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="viewFilter">Card size</label>
+            <select id="viewFilter">
+              <option value="full">Collector View</option>
+              <option value="compact">Compact Sprint</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <div class="results-bar" id="dexStart">
+        <p id="resultsText">Preparing Pokédex...</p>
+        <div class="type-legend" id="typeLegend"></div>
+      </div>
+
+      <section id="loader" class="loader" aria-live="polite">
+        <div class="ball"></div>
+        Scanning tall grass, caves, oceans, ruins, and every weird alternate dimension for data...
+      </section>
+
+      <section id="grid" class="grid" aria-live="polite"></section>
+      <section id="emptyState" class="empty-state" hidden>No Pokémon matched that search. Try another type, generation, or keyword.</section>
+      <div class="pagination" id="pagination" hidden>
+        <button class="chip-btn" id="prevPage">⬅ Prev</button>
+        <button class="chip-btn" id="nextPage">Next ➡</button>
+      </div>
+      <p class="footer-note">Made with unabashed Poké-fan energy by pradhanska. Click any card for the full dossier.</p>
+    </main>
+  </div>
+
+  <div class="detail-drawer" id="detailDrawer" aria-hidden="true">
+    <div class="detail-card" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="detail-head">
+        <img id="detailImage" src="" alt="" width="475" height="475" loading="lazy" decoding="async">
+        <div>
+          <p class="dex-num" id="detailDex"></p>
+          <div class="name-line"><h4 id="detailTitle"></h4><span class="tag" id="detailGen"></span></div>
+          <div class="type-legend" id="detailTypes"></div>
+          <p class="entry" id="detailFlavor"></p>
+        </div>
+        <button class="close-btn" id="closeDetail" aria-label="Close details">✕</button>
+      </div>
+      <div class="detail-sections">
+        <section class="detail-panel">
+          <h5>Battle Sheet</h5>
+          <div class="stat-block" id="detailStats"></div>
+        </section>
+        <section class="detail-panel">
+          <h5>Species Notes</h5>
+          <div id="detailSpecies"></div>
+        </section>
+        <section class="detail-panel">
+          <h5>Abilities & Forms</h5>
+          <div id="detailAbilities"></div>
+        </section>
+        <section class="detail-panel">
+          <h5>Evolution Line</h5>
+          <div id="detailEvolution"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const typeColors = {
+      normal:'#A8A77A', fire:'#EE8130', water:'#6390F0', electric:'#F7D02C', grass:'#7AC74C', ice:'#96D9D6',
+      fighting:'#C22E28', poison:'#A33EA1', ground:'#E2BF65', flying:'#A98FF3', psychic:'#F95587', bug:'#A6B91A',
+      rock:'#B6A136', ghost:'#735797', dragon:'#6F35FC', dark:'#705746', steel:'#B7B7CE', fairy:'#D685AD'
+    };
+    const generationLabels = {
+      'generation-i':'Gen I · Kanto', 'generation-ii':'Gen II · Johto', 'generation-iii':'Gen III · Hoenn',
+      'generation-iv':'Gen IV · Sinnoh', 'generation-v':'Gen V · Unova', 'generation-vi':'Gen VI · Kalos',
+      'generation-vii':'Gen VII · Alola', 'generation-viii':'Gen VIII · Galar/Hisui', 'generation-ix':'Gen IX · Paldea'
+    };
+    const state = { pokemon: [], filtered: [], page: 1, perPage: 24, theme: 'light' };
+    const els = {
+      searchInput: document.getElementById('searchInput'), typeFilter: document.getElementById('typeFilter'), generationFilter: document.getElementById('generationFilter'),
+      sortFilter: document.getElementById('sortFilter'), viewFilter: document.getElementById('viewFilter'), grid: document.getElementById('grid'), loader: document.getElementById('loader'),
+      emptyState: document.getElementById('emptyState'), resultsText: document.getElementById('resultsText'), totalCount: document.getElementById('totalCount'),
+      pagination: document.getElementById('pagination'), prevPage: document.getElementById('prevPage'), nextPage: document.getElementById('nextPage'), typeLegend: document.getElementById('typeLegend'),
+      drawer: document.getElementById('detailDrawer'), detailImage: document.getElementById('detailImage'), detailDex: document.getElementById('detailDex'), detailTitle: document.getElementById('detailTitle'),
+      detailGen: document.getElementById('detailGen'), detailTypes: document.getElementById('detailTypes'), detailFlavor: document.getElementById('detailFlavor'), detailStats: document.getElementById('detailStats'),
+      detailSpecies: document.getElementById('detailSpecies'), detailAbilities: document.getElementById('detailAbilities'), detailEvolution: document.getElementById('detailEvolution')
+    };
+
+    function slugToTitle(slug){ return slug.split('-').map(s => s ? s[0].toUpperCase() + s.slice(1) : s).join(' '); }
+    function statValue(p, key){ return p.statsMap[key] ?? 0; }
+    function formatHeight(dm){ return `${(dm / 10).toFixed(1)} m`; }
+    function formatWeight(hg){ return `${(hg / 10).toFixed(1)} kg`; }
+    function artworkFor(id){ return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`; }
+    function homeArtFor(id){ return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`; }
+    function cardTypePill(type){ return `<span class="type-pill" style="background:${typeColors[type] || '#777'}">${type}</span>`; }
+    function sanitizeFlavor(text=''){ return text.replace(/[\f\n\r]+/g,' ').replace(/\s+/g,' ').trim(); }
+    function getEnglishEntry(entries){
+      const english = entries.filter(e => e.language?.name === 'en');
+      return sanitizeFlavor((english.find(e => e.version?.name === 'scarlet') || english.find(e => e.version?.name === 'shield') || english[0] || {}).flavor_text || 'No Pokédex flavor text found.');
+    }
+    function spriteFallback(img, id, name){
+      img.onerror = null;
+      img.src = homeArtFor(id);
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+      };
+      img.alt = `${name} artwork`;
+    }
+    function renderLegend(){
+      els.typeLegend.innerHTML = Object.keys(typeColors).slice(0, 9).map(t => cardTypePill(t)).join('');
+    }
+    function populateFilters(){
+      Object.keys(typeColors).forEach(type => {
+        const option = document.createElement('option'); option.value = type; option.textContent = slugToTitle(type); els.typeFilter.append(option);
+      });
+      Object.entries(generationLabels).forEach(([value,label]) => {
+        const option = document.createElement('option'); option.value = value; option.textContent = label; els.generationFilter.append(option);
+      });
+    }
+    function applyFilters(){
+      const q = els.searchInput.value.trim().toLowerCase();
+      const type = els.typeFilter.value;
+      const gen = els.generationFilter.value;
+      const sort = els.sortFilter.value;
+      let filtered = state.pokemon.filter(p => {
+        const matchesQ = !q || p.name.includes(q) || String(p.id) === q || p.abilities.some(a => a.includes(q)) || (p.habitat || '').includes(q) || p.displayName.toLowerCase().includes(q);
+        const matchesType = !type || p.types.includes(type);
+        const matchesGen = !gen || p.generation === gen;
+        return matchesQ && matchesType && matchesGen;
+      });
+      filtered.sort((a,b) => {
+        switch(sort){
+          case 'id-desc': return b.id - a.id;
+          case 'name-asc': return a.displayName.localeCompare(b.displayName);
+          case 'hp-desc': return statValue(b,'hp') - statValue(a,'hp');
+          case 'atk-desc': return statValue(b,'attack') - statValue(a,'attack');
+          case 'spd-desc': return statValue(b,'speed') - statValue(a,'speed');
+          default: return a.id - b.id;
+        }
+      });
+      state.filtered = filtered;
+      state.page = 1;
+      renderPage();
+    }
+    function renderPage(){
+      const compact = els.viewFilter.value === 'compact';
+      state.perPage = compact ? 40 : 24;
+      const start = (state.page - 1) * state.perPage;
+      const pageItems = state.filtered.slice(start, start + state.perPage);
+      els.grid.innerHTML = pageItems.map(p => `
+        <article class="card" tabindex="0" role="button" data-id="${p.id}" aria-label="Open details for ${p.displayName}">
+          <div class="art-wrap">
+            <img src="${artworkFor(p.id)}" alt="${p.displayName} official artwork" width="475" height="475" loading="lazy" decoding="async" onerror="(${spriteFallback.toString()})(this, ${p.id}, '${p.displayName.replace(/'/g, "\\'")}')">
+          </div>
+          <div>
+            <div class="dex-num">#${String(p.id).padStart(4,'0')}</div>
+            <div class="name-line">
+              <h4>${p.displayName}</h4>
+              <span class="tag">${generationLabels[p.generation] || slugToTitle(p.generation || 'unknown')}</span>
+            </div>
+            <div class="type-legend">${p.types.map(cardTypePill).join('')}</div>
+            <div class="meta">
+              <span>${formatHeight(p.height)}</span>
+              <span>${formatWeight(p.weight)}</span>
+              <span>${p.shape ? slugToTitle(p.shape) : 'Unknown shape'}</span>
+              <span>${p.habitat ? slugToTitle(p.habitat) : 'Habitat unknown'}</span>
+            </div>
+            <div class="abilities">${p.abilities.slice(0, 3).map(a => `<span>${slugToTitle(a)}</span>`).join('')}</div>
+            <p class="entry">${p.flavor}</p>
+            <div class="stat-block">
+              <div class="stat"><strong>HP</strong><span>${statValue(p,'hp')}</span></div>
+              <div class="stat"><strong>Attack</strong><span>${statValue(p,'attack')}</span></div>
+              <div class="stat"><strong>Defense</strong><span>${statValue(p,'defense')}</span></div>
+              <div class="stat"><strong>Speed</strong><span>${statValue(p,'speed')}</span></div>
+            </div>
+            <div class="evolution">Evolution line: ${p.evolutionLine.length ? p.evolutionLine.map(slugToTitle).join(' → ') : 'Standalone or unknown'}</div>
+          </div>
+        </article>
+      `).join('');
+      els.emptyState.hidden = pageItems.length !== 0;
+      els.pagination.hidden = state.filtered.length <= state.perPage;
+      els.prevPage.disabled = state.page === 1;
+      els.nextPage.disabled = start + state.perPage >= state.filtered.length;
+      els.resultsText.textContent = `${state.filtered.length} Pokémon match your current filters · Page ${state.page} of ${Math.max(1, Math.ceil(state.filtered.length / state.perPage))}`;
+      Array.from(els.grid.querySelectorAll('.card')).forEach(card => {
+        card.addEventListener('click', () => openDetail(Number(card.dataset.id)));
+        card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(Number(card.dataset.id)); }});
+      });
+    }
+    function openDetail(id){
+      const p = state.pokemon.find(x => x.id === id); if(!p) return;
+      els.detailImage.src = artworkFor(p.id);
+      els.detailImage.alt = `${p.displayName} official artwork`;
+      els.detailImage.onerror = () => spriteFallback(els.detailImage, p.id, p.displayName);
+      els.detailDex.textContent = `National Dex #${String(p.id).padStart(4,'0')}`;
+      els.detailTitle.textContent = p.displayName;
+      els.detailGen.textContent = generationLabels[p.generation] || slugToTitle(p.generation || 'unknown');
+      els.detailTypes.innerHTML = p.types.map(cardTypePill).join('');
+      els.detailFlavor.textContent = p.flavor;
+      els.detailStats.innerHTML = Object.entries({HP:statValue(p,'hp'),Attack:statValue(p,'attack'),Defense:statValue(p,'defense'),'Sp. Atk':statValue(p,'special-attack'),'Sp. Def':statValue(p,'special-defense'),Speed:statValue(p,'speed')}).map(([k,v]) => `<div class="stat"><strong>${k}</strong><span>${v}</span></div>`).join('');
+      els.detailSpecies.innerHTML = `
+        <p><strong>Category:</strong> ${p.genera || 'Unknown species'}</p>
+        <p><strong>Habitat:</strong> ${p.habitat ? slugToTitle(p.habitat) : 'Unknown'}</p>
+        <p><strong>Shape:</strong> ${p.shape ? slugToTitle(p.shape) : 'Unknown'}</p>
+        <p><strong>Color tag:</strong> ${p.color ? slugToTitle(p.color) : 'Unknown'}</p>
+        <p><strong>Base happiness:</strong> ${p.baseHappiness ?? 'Unknown'}</p>
+        <p><strong>Capture rate:</strong> ${p.captureRate ?? 'Unknown'}</p>
+        <p><strong>Growth rate:</strong> ${p.growthRate ? slugToTitle(p.growthRate) : 'Unknown'}</p>
+        <p><strong>Egg groups:</strong> ${p.eggGroups.length ? p.eggGroups.map(slugToTitle).join(', ') : 'Unknown'}</p>
+        <p><strong>Game appearances:</strong> ${p.games.length ? p.games.map(slugToTitle).slice(0,10).join(', ') : 'Unknown'}</p>
+      `;
+      els.detailAbilities.innerHTML = `
+        <p><strong>Abilities:</strong> ${p.abilities.length ? p.abilities.map(slugToTitle).join(', ') : 'Unknown'}</p>
+        <p><strong>Hidden abilities:</strong> ${p.hiddenAbilities.length ? p.hiddenAbilities.map(slugToTitle).join(', ') : 'None listed'}</p>
+        <p><strong>Varieties/forms:</strong> ${p.varieties.length ? p.varieties.map(slugToTitle).join(', ') : 'Single standard form'}</p>
+        <p><strong>Legendary / Mythical / Baby:</strong> ${p.isLegendary ? 'Legendary' : 'No'} / ${p.isMythical ? 'Mythical' : 'No'} / ${p.isBaby ? 'Baby' : 'No'}</p>
+      `;
+      els.detailEvolution.innerHTML = `
+        <p>${p.evolutionLine.length ? p.evolutionLine.map(slugToTitle).join(' → ') : 'No detailed evolution data available.'}</p>
+      `;
+      els.drawer.setAttribute('open','');
+      els.drawer.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDetail(){
+      els.drawer.removeAttribute('open');
+      els.drawer.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+    async function fetchJSON(url){ const res = await fetch(url); if(!res.ok) throw new Error(`Failed ${url}`); return res.json(); }
+    function buildEvolutionNames(node, bucket=[]){
+      if(!node) return bucket;
+      if(node.species?.name && !bucket.includes(node.species.name)) bucket.push(node.species.name);
+      (node.evolves_to || []).forEach(child => buildEvolutionNames(child, bucket));
+      return bucket;
+    }
+    async function loadPokemon(){
+      renderLegend();
+      populateFilters();
+      const limit = 1025;
+      const list = await fetchJSON(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+      const essentials = list.results.map((item, index) => ({ name: item.name, id: index + 1, url: item.url }));
+      const chunks = [];
+      for(let i=0;i<essentials.length;i+=24) chunks.push(essentials.slice(i,i+24));
+      const loaded = [];
+      for(const chunk of chunks){
+        const batch = await Promise.all(chunk.map(async ({name,id}) => {
+          try {
+            const [pokemon, species] = await Promise.all([
+              fetchJSON(`https://pokeapi.co/api/v2/pokemon/${id}`),
+              fetchJSON(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+            ]);
+            const evolution = species.evolution_chain?.url ? await fetchJSON(species.evolution_chain.url) : null;
+            const englishGenus = species.genera?.find(g => g.language.name === 'en')?.genus || '';
+            return {
+              id,
+              name: pokemon.name,
+              displayName: slugToTitle(pokemon.name),
+              types: pokemon.types.map(t => t.type.name),
+              abilities: pokemon.abilities.map(a => a.ability.name),
+              hiddenAbilities: pokemon.abilities.filter(a => a.is_hidden).map(a => a.ability.name),
+              height: pokemon.height,
+              weight: pokemon.weight,
+              statsMap: Object.fromEntries(pokemon.stats.map(s => [s.stat.name, s.base_stat])),
+              games: pokemon.game_indices.map(g => g.version.name),
+              varieties: species.varieties?.map(v => v.pokemon.name) || [],
+              color: species.color?.name || '',
+              habitat: species.habitat?.name || '',
+              shape: species.shape?.name || '',
+              generation: species.generation?.name || '',
+              genera: englishGenus,
+              baseHappiness: species.base_happiness,
+              captureRate: species.capture_rate,
+              growthRate: species.growth_rate?.name || '',
+              eggGroups: species.egg_groups?.map(g => g.name) || [],
+              isLegendary: species.is_legendary,
+              isMythical: species.is_mythical,
+              isBaby: species.is_baby,
+              flavor: getEnglishEntry(species.flavor_text_entries || []),
+              evolutionLine: evolution ? buildEvolutionNames(evolution.chain, []) : []
+            };
+          } catch (error) {
+            return null;
+          }
+        }));
+        loaded.push(...batch.filter(Boolean));
+        els.resultsText.textContent = `Loaded ${loaded.length} of ${limit} Pokémon...`;
+      }
+      state.pokemon = loaded.sort((a,b) => a.id - b.id);
+      state.filtered = [...state.pokemon];
+      els.totalCount.textContent = state.pokemon.length;
+      els.loader.hidden = true;
+      renderPage();
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', state.theme);
+      document.getElementById('themeToggle').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+    });
+    document.getElementById('scrollDex').addEventListener('click', () => document.getElementById('dexStart').scrollIntoView({behavior:'smooth'}));
+    document.getElementById('scrollFilters').addEventListener('click', () => document.getElementById('filtersPanel').scrollIntoView({behavior:'smooth'}));
+    document.getElementById('jumpRandom').addEventListener('click', () => {
+      const pool = state.filtered.length ? state.filtered : state.pokemon;
+      const chosen = pool[Math.floor(Math.random() * pool.length)];
+      if(chosen) openDetail(chosen.id);
+    });
+    [els.searchInput, els.typeFilter, els.generationFilter, els.sortFilter, els.viewFilter].forEach(el => el.addEventListener('input', applyFilters));
+    els.prevPage.addEventListener('click', () => { if(state.page > 1){ state.page--; renderPage(); window.scrollTo({top: document.getElementById('dexStart').offsetTop - 90, behavior:'smooth'});} });
+    els.nextPage.addEventListener('click', () => { if((state.page * state.perPage) < state.filtered.length){ state.page++; renderPage(); window.scrollTo({top: document.getElementById('dexStart').offsetTop - 90, behavior:'smooth'});} });
+    document.getElementById('closeDetail').addEventListener('click', closeDetail);
+    els.drawer.addEventListener('click', e => { if(e.target === els.drawer) closeDetail(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail(); });
+
+    loadPokemon().catch(error => {
+      els.loader.innerHTML = 'The Pokédex signal got scrambled. Please refresh and try again.';
+      console.error(error);
+    });
+  </script>
+</body>
+</html>
