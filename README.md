@@ -60,9 +60,14 @@ No build step required.
 
 Save:
 
-```text
+
 pokemon-enthusiast-pokedex.html
-```
+│
+├── pokemon-enthusiast-pokedex.html
+├── README.md
+└── screenshots/
+    ├── home.png
+    └── detail.png
 
 ### 2. Open in your browser
 
@@ -205,10 +210,8 @@ Includes:
 
 ## 📸 Screenshots
 
-You can add screenshots here later:
 
-
-![Home Screen](./screenshots/home.png)
+![Home Screen](./screenshots/home.png)<br><br>
 ![Detail Drawer](./screenshots/detail.png)
 
 
